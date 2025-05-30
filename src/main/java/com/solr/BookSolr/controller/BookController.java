@@ -28,9 +28,9 @@ public class BookController {
     }
 
 
-@GetMapping("/search")
-public List<Book> searchBooks(@RequestParam("q") String keyword) {
-    return service.searchByKeyword(keyword);
-}
+    @GetMapping("/search")
+    public List<Book> searchBooks(@RequestParam("q") String keyword) {
+        return service.searchByKeyword(keyword);
+    }
 
 }
