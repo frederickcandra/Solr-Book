@@ -1,10 +1,13 @@
 package com.solr.BookSolr.controller;
 
 import com.solr.BookSolr.model.Book;
+import com.solr.BookSolr.response.ApiResponse;
 import com.solr.BookSolr.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -16,27 +19,48 @@ public class BookController {
         this.service = service;
     }
 
+    private Map<String, Object> createHeader(String message, int status, int count) {
+        Map<String, Object> header = new HashMap<>();
+        header.put("status", status);
+        header.put("message", message);
+        header.put("count", count);
+        header.put("timestamp", System.currentTimeMillis());
+        return header;
+    }
+
     @PostMapping
-    public String addBook(@RequestBody Book book) throws Exception {
+    public ApiResponse<String> addBook(@RequestBody Book book) throws Exception {
         service.save(book);
-        return "Book saved successfully!";
+        return new ApiResponse<>(
+                createHeader("Book saved successfully", 200, 1),
+                "Book saved successfully!"
+        );
     }
 
     @PostMapping("/bulk")
-    public String addBooks(@RequestBody List<Book> books) throws Exception {
+    public ApiResponse<String> addBooks(@RequestBody List<Book> books) throws Exception {
         service.saveAll(books);
-        return books.size() + " books saved successfully!";
+        return new ApiResponse<>(
+                createHeader("Bulk insert successful", 200, books.size()),
+                books.size() + " books saved successfully!"
+        );
     }
 
     @GetMapping
-    public List<Book> getAllBooks() throws Exception {
-        return service.findAll();
+    public ApiResponse<List<Book>> getAllBooks() throws Exception {
+        List<Book> result = service.findAll();
+        return new ApiResponse<>(
+                createHeader("Books fetched successfully", 200, result.size()),
+                result
+        );
     }
-
 
     @GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam("q") String keyword) {
-        return service.searchByKeyword(keyword);
+    public ApiResponse<List<Book>> searchBooks(@RequestParam("q") String keyword) {
+        List<Book> result = service.searchByKeyword(keyword);
+        return new ApiResponse<>(
+                createHeader("Search completed", 200, result.size()),
+                result
+        );
     }
-
 }

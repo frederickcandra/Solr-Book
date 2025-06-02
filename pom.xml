@@ -46,6 +46,11 @@
 			<artifactId>solr-solrj</artifactId>
 			<version>9.8.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-client</artifactId>
+			<version>11.0.20</version>
+		</dependency>
 	</dependencies>
 
 	<build>
