@@ -22,6 +22,12 @@ public class BookController {
         return "Book saved successfully!";
     }
 
+    @PostMapping("/bulk")
+    public String addBooks(@RequestBody List<Book> books) throws Exception {
+        service.saveAll(books);
+        return books.size() + " books saved successfully!";
+    }
+
     @GetMapping
     public List<Book> getAllBooks() throws Exception {
         return service.findAll();

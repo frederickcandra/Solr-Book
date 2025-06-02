@@ -13,7 +13,6 @@ public class Book {
         this.author = author;
     }
 
-    // Getters & Setters
     public String getId() {
         return id;
     }
